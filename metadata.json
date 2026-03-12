@@ -1,0 +1,7 @@
+{
+  "name": "GTI — Global Touring Intelligence",
+  "description": "Global Touring Intelligence (GTI). The institutional-grade operating system for global tours. Providing artists, managers, and agencies with unified intelligence, financial transparency, and market-by-market performance analytics.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
