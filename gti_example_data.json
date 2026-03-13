@@ -1,0 +1,76 @@
+{
+  "artist": {
+    "id": "uncle-waffles",
+    "name": "Uncle Waffles"
+  },
+  "tour": {
+    "id": "waffles-world-24",
+    "name": "Less Is More World Tour",
+    "shows": [
+      {
+        "id": "show-001",
+        "date": "2024-10-01",
+        "venue": {
+          "name": "History",
+          "city": "Toronto",
+          "country": "Canada"
+        },
+        "ticketing": {
+          "capacity": { "value": 2500, "source": "confirmed", "confidence": 1.0 },
+          "sold": { "value": 2450, "source": "confirmed", "confidence": 1.0 },
+          "gross": { "value": 122500, "currency": "USD", "source": "confirmed", "confidence": 0.95 }
+        },
+        "financials": {
+          "revenue": [
+            { "category": "tickets", "amount": { "value": 122500, "currency": "USD", "source": "confirmed", "confidence": 1.0 } },
+            { "category": "merch", "amount": { "value": 15000, "currency": "USD", "source": "estimated", "confidence": 0.7 } }
+          ],
+          "expenses": [
+            { "category": "production", "amount": { "value": 25000, "currency": "USD", "source": "confirmed", "confidence": 1.0 } },
+            { "category": "travel", "amount": { "value": 12000, "currency": "USD", "source": "estimated", "confidence": 0.8 } }
+          ]
+        },
+        "splits": [
+          { "entity": "Artist", "percentage": { "value": 0.85, "source": "confirmed", "confidence": 1.0 } },
+          { "entity": "Agent", "percentage": { "value": 0.10, "source": "confirmed", "confidence": 1.0 } }
+        ]
+      },
+      {
+        "id": "show-002",
+        "date": "2024-10-03",
+        "venue": {
+          "name": "Brooklyn Mirage",
+          "city": "New York",
+          "country": "USA"
+        },
+        "ticketing": {
+          "capacity": { "value": 6000, "source": "confirmed", "confidence": 1.0 },
+          "sold": { "value": 4200, "source": "estimated", "confidence": 0.6 },
+          "gross": { "value": 210000, "currency": "USD", "source": "estimated", "confidence": 0.5 }
+        },
+        "financials": {
+          "revenue": [
+            { "category": "tickets", "amount": { "value": 210000, "currency": "USD", "source": "estimated", "confidence": 0.5 } }
+          ],
+          "expenses": [
+            { "category": "marketing", "amount": { "value": 15000, "currency": "USD", "source": "confirmed", "confidence": 1.0 } }
+          ]
+        }
+      },
+      {
+        "id": "show-003",
+        "date": "2024-10-05",
+        "venue": {
+          "name": "Eko Convention Centre",
+          "city": "Lagos",
+          "country": "Nigeria"
+        },
+        "ticketing": {
+          "capacity": { "value": 5000, "source": "confirmed", "confidence": 1.0 },
+          "sold": { "value": 4800, "source": "confirmed", "confidence": 1.0 },
+          "gross": { "value": 96000, "currency": "USD", "source": "confirmed", "confidence": 0.9 }
+        }
+      }
+    ]
+  }
+}
