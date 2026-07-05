@@ -6,7 +6,7 @@ import { useAppContext } from '../context/AppContext';
 import { getCsvTourStats, formatCompactCurrency, formatNumber } from '../lib/landingStats';
 import AuthModal from '../components/landing/AuthModal';
 import LandingDataSection from '../components/landing/LandingDataSection';
-import LandingPricing, { PricingTier } from '../components/landing/LandingPricing';
+import LandingPricing, { PricingPlan } from '../components/landing/LandingPricing';
 
 const { totalShows, totalGross, uniqueArtists } = getCsvTourStats();
 
@@ -63,9 +63,9 @@ export default function Landing() {
     setAuthOpen(true);
   };
 
-  const handleSubscribe = (tier: PricingTier) => {
-    // TODO: Wire to Stripe Checkout Session API (tier → price ID mapping).
-    console.warn(`handleSubscribe stub called for tier: ${tier}`);
+  const handleSubscribe = (plan: PricingPlan) => {
+    // TODO: Wire to Stripe Checkout Session API (plan → price ID mapping).
+    console.warn(`handleSubscribe stub called for plan: ${plan}`);
     setAuthMode('signup');
     setAuthOpen(true);
   };
