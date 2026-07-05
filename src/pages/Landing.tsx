@@ -4,6 +4,7 @@ import { motion } from 'motion/react';
 import { ArrowRight, Briefcase, Megaphone, Users } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { getCsvTourStats, formatCompactCurrency, formatNumber } from '../lib/landingStats';
+import { createStripeCheckoutSession } from '../lib/stripeCheckout';
 import AuthModal from '../components/landing/AuthModal';
 import LandingDataSection from '../components/landing/LandingDataSection';
 import LandingPricing, { PricingPlan } from '../components/landing/LandingPricing';
@@ -49,30 +50,62 @@ const AUDIENCE_CARDS = [
 
 export default function Landing() {
   const navigate = useNavigate();
-  const { setIsAuthenticated } = useAppContext();
+  const { currentUser, setIsAuthenticated } = useAppContext();
   const [authOpen, setAuthOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin');
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [pendingPlan, setPendingPlan] = useState<PricingPlan | null>(null);
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [checkoutError, setCheckoutError] = useState('');
 
   const scrollToTeaser = () => {
     document.getElementById('data-teaser')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const openSignIn = () => {
+    setPendingPlan(null);
     setAuthMode('signin');
     setAuthOpen(true);
   };
 
-  const handleSubscribe = (plan: PricingPlan) => {
-    // TODO: Wire to Stripe Checkout Session API (plan → price ID mapping).
-    console.warn(`handleSubscribe stub called for plan: ${plan}`);
-    setAuthMode('signup');
-    setAuthOpen(true);
+  const startCheckout = async (plan: PricingPlan) => {
+    setCheckoutError('');
+    setCheckoutLoading(true);
+    try {
+      const url = await createStripeCheckoutSession(plan);
+      window.location.href = url;
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Unable to start checkout.';
+      setCheckoutError(message);
+    } finally {
+      setCheckoutLoading(false);
+    }
   };
 
-  const handleAuthSuccess = () => {
+  const handleSubscribe = async (plan: PricingPlan) => {
+    setCheckoutError('');
+
+    if (!currentUser) {
+      setPendingPlan(plan);
+      setAuthMode('signup');
+      setAuthOpen(true);
+      return;
+    }
+
+    await startCheckout(plan);
+  };
+
+  const handleAuthSuccess = async () => {
     setAuthOpen(false);
     setIsAuthenticated(true);
+
+    if (pendingPlan) {
+      const plan = pendingPlan;
+      setPendingPlan(null);
+      await startCheckout(plan);
+      return;
+    }
+
     navigate('/app/health');
   };
 
@@ -187,7 +220,17 @@ export default function Landing() {
       <LandingDataSection />
 
       {/* 4. Pricing */}
+      {checkoutError && (
+        <div className="max-w-xl mx-auto px-6 -mb-12">
+          <p className="text-center text-xs text-rose-400 bg-rose-500/10 border border-rose-500/20 rounded-lg px-4 py-3">
+            {checkoutError}
+          </p>
+        </div>
+      )}
       <LandingPricing onSubscribe={handleSubscribe} />
+      {checkoutLoading && (
+        <p className="text-center text-xs text-[#94A3B8] -mt-12 pb-8">Redirecting to secure checkout…</p>
+      )}
 
       {/* 5. Who it's for */}
       <section className="py-20 px-6">
